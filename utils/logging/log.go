@@ -2,12 +2,12 @@ package logging
 
 import (
 	"fmt"
+	"github.com/liu8534584/gotools/utils/mystring"
+	"github.com/liu8534584/gotools/utils/setting"
 	"log"
 	"os"
 	"runtime"
 	"strings"
-	"test.liuda.com/gotest/utils/mystring"
-	"test.liuda.com/gotest/utils/setting"
 )
 
 type Level int

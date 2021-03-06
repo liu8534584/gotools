@@ -8,11 +8,11 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/axgle/mahonia"
 	"github.com/bitly/go-simplejson"
+	"github.com/liu8534584/gotools/utils/myerr"
 	"github.com/spf13/cast"
 	"reflect"
 	"regexp"
 	"strings"
-	"test.liuda.com/gotest/utils/myerr"
 )
 
 //首字母大写

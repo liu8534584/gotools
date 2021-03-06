@@ -2,8 +2,8 @@ package qrcode
 
 import (
 	"github.com/boombuler/barcode/qr"
-	"test.liuda.com/gotest/utils/common"
-	"test.liuda.com/gotest/utils/setting"
+	"github.com/liu8534584/gotools/utils/common"
+	"github.com/liu8534584/gotools/utils/setting"
 )
 
 type QrCode struct {

@@ -2,7 +2,7 @@ package myredis
 
 import (
 	"github.com/go-redis/redis"
-	"test.liuda.com/gotest/utils/setting"
+	"github.com/liu8534584/gotools/utils/setting"
 )
 
 var Client *redis.Client

@@ -2,13 +2,13 @@ package upload
 
 import (
 	"fmt"
+	"github.com/liu8534584/gotools/utils/common"
+	"github.com/liu8534584/gotools/utils/file"
+	"github.com/liu8534584/gotools/utils/logging"
+	"github.com/liu8534584/gotools/utils/setting"
 	"mime/multipart"
 	"os"
 	"strings"
-	"test.liuda.com/gotest/utils/common"
-	"test.liuda.com/gotest/utils/file"
-	"test.liuda.com/gotest/utils/logging"
-	"test.liuda.com/gotest/utils/setting"
 )
 
 func GetImagePath() string {

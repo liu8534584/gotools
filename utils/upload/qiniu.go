@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/liu8534584/gotools/utils/logging"
+	"github.com/liu8534584/gotools/utils/myredis"
 	"github.com/qiniu/api.v7/v7/auth/qbox"
 	"github.com/qiniu/api.v7/v7/storage"
-	"test.liuda.com/gotest/utils/logging"
-	"test.liuda.com/gotest/utils/myredis"
 )
 
 const accessKey = "mtU2jkGYD1r0fKBvu6sXBvD32FWOgxnsIsAYlN8F"

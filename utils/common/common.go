@@ -10,6 +10,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/liu8534584/gotools/consts"
+	"github.com/liu8534584/gotools/consts/e"
+	"github.com/liu8534584/gotools/utils/file"
+	"github.com/liu8534584/gotools/utils/myhttp"
 	"io"
 	"io/ioutil"
 	"log"
@@ -18,10 +22,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"test.liuda.com/gotest/consts"
-	"test.liuda.com/gotest/consts/e"
-	"test.liuda.com/gotest/utils/file"
-	"test.liuda.com/gotest/utils/myhttp"
 	"time"
 )
 

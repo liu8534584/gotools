@@ -2,8 +2,8 @@ package utils
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/liu8534584/gotools/consts"
 	"github.com/unknwon/com"
-	"test.liuda.com/gotest/consts"
 )
 
 func GetPage(c *gin.Context) int {

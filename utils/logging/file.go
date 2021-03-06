@@ -2,10 +2,10 @@ package logging
 
 import (
 	"fmt"
+	"github.com/liu8534584/gotools/utils/setting"
 	"log"
 	"os"
 	"path/filepath"
-	"test.liuda.com/gotest/utils/setting"
 	"time"
 )
 

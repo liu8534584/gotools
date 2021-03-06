@@ -3,7 +3,7 @@ package redisQueue
 import (
 	"fmt"
 	"github.com/go-redis/redis"
-	"test.liuda.com/gotest/utils/logging"
+	"github.com/liu8534584/gotools/utils/logging"
 )
 
 type RedisInstance struct {

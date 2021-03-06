@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/liu8534584/gotools/utils/common"
 	"reflect"
 	"strings"
-	"test.liuda.com/gotest/utils/common"
 )
 
 func createStruct(jsonStr string, structName string) {

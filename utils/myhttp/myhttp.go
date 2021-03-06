@@ -2,13 +2,13 @@ package myhttp
 
 import (
 	"fmt"
+	"github.com/liu8534584/gotools/utils/logging"
+	"github.com/liu8534584/gotools/utils/myerr"
 	"io/ioutil"
 	"net"
 	"net/http"
 	"net/url"
 	"strings"
-	"test.liuda.com/gotest/utils/logging"
-	"test.liuda.com/gotest/utils/myerr"
 	"time"
 )
 

@@ -10,12 +10,15 @@ import (
 	"github.com/qiniu/api.v7/v7/storage"
 )
 
-const accessKey = "mtU2jkGYD1r0fKBvu6sXBvD32FWOgxnsIsAYlN8F"
-const secretKey = "LlyQJvP7iPDN_mT1WbUWFFDzWYrZj0VzEp-sHm6l"
-const bucket = "mycdn"
-
 type Qiniu struct {
-	cfg storage.Config
+	cfg       storage.Config
+	AccessKey string
+	SecretKey string
+	Bucket    string
+}
+
+func NewQiniu(accessKey, secretKey, bucket string) *Qiniu {
+	return &Qiniu{AccessKey: accessKey, SecretKey: secretKey, Bucket: bucket}
 }
 
 func (q *Qiniu) getUploadToken() string {
@@ -45,7 +48,7 @@ func (q *Qiniu) getCfg() {
 	q.cfg.UseCdnDomains = false
 }
 
-//字节流上传
+// 字节流上传
 func (q *Qiniu) UploadBytes(k string, data []byte) (string, error) {
 	q.getCfg()
 
@@ -62,7 +65,7 @@ func (q *Qiniu) UploadBytes(k string, data []byte) (string, error) {
 	return k, nil
 }
 
-//上传文件
+// 上传文件
 func (q *Qiniu) UploadFile(k string, filepath string) (string, error) {
 	q.getCfg()
 	formUploader := storage.NewFormUploader(&q.cfg)

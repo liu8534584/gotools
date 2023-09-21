@@ -9,20 +9,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"github.com/liu8534584/gotools/consts"
-	"github.com/liu8534584/gotools/consts/e"
 	"github.com/liu8534584/gotools/utils/file"
 	"github.com/liu8534584/gotools/utils/myhttp"
 	"io"
 	"io/ioutil"
 	"log"
-	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
 )
 
 // 获取文件内容 / 获取url地址内容
@@ -41,7 +37,8 @@ func FileGetContents(urls string) ([]byte, error) {
 	return bytes, nil
 }
 
-/**
+/*
+*
 写入文件
 */
 func FilePutContent(filename string, data string, flag int) bool {
@@ -68,7 +65,8 @@ func FilePutContent(filename string, data string, flag int) bool {
 	return true
 }
 
-/**
+/*
+*
 json转map
 */
 func JsonDecode(jsonStr string) map[string]interface{} {
@@ -78,7 +76,8 @@ func JsonDecode(jsonStr string) map[string]interface{} {
 	return dat
 }
 
-/**
+/*
+*
 json格式化
 */
 func JsonEncode(m map[string]interface{}) []byte {
@@ -92,40 +91,41 @@ func JsonEncode(m map[string]interface{}) []byte {
 /**
 构造成功返回数据
 */
-func JsonSuccessReturn(c *gin.Context, code int, data map[string]interface{}) {
-	var resultDataMap map[string]interface{} /*创建集合 */
-	resultDataMap = make(map[string]interface{})
-	resultDataMap["code"] = code
-	resultDataMap["data"] = data
-	resultDataMap["message"] = "ok"
-	resultDataMap["time"] = time.Now().Unix()
-	c.JSON(http.StatusOK, resultDataMap)
-}
+//func JsonSuccessReturn(c *gin.Context, code int, data map[string]interface{}) {
+//	var resultDataMap map[string]interface{} /*创建集合 */
+//	resultDataMap = make(map[string]interface{})
+//	resultDataMap["code"] = code
+//	resultDataMap["data"] = data
+//	resultDataMap["message"] = "ok"
+//	resultDataMap["time"] = time.Now().Unix()
+//	c.JSON(http.StatusOK, resultDataMap)
+//}
 
 // 成功返回空
-func JsonSuccessReturnNull(c *gin.Context) {
-	var resultDataMap map[string]interface{} /*创建集合 */
-	resultDataMap = make(map[string]interface{})
-	resultDataMap["code"] = e.SUCCESS
-	resultDataMap["message"] = e.GetMsg(e.SUCCESS)
-	resultDataMap["time"] = time.Now().Unix()
-	c.JSON(http.StatusOK, resultDataMap)
-}
+//func JsonSuccessReturnNull(c *gin.Context) {
+//	var resultDataMap map[string]interface{} /*创建集合 */
+//	resultDataMap = make(map[string]interface{})
+//	resultDataMap["code"] = e.SUCCESS
+//	resultDataMap["message"] = e.GetMsg(e.SUCCESS)
+//	resultDataMap["time"] = time.Now().Unix()
+//	c.JSON(http.StatusOK, resultDataMap)
+//}
 
 /**
 构造失败返回数据
 */
-func JsonFailReturn(c *gin.Context, code int) {
-	var resultDataMap map[string]interface{} /*创建集合 */
-	resultDataMap = make(map[string]interface{})
-	resultDataMap["code"] = code
-	resultDataMap["data"] = make(map[string]interface{})
-	resultDataMap["message"] = e.GetMsg(code)
-	resultDataMap["time"] = time.Now().Unix()
-	c.JSON(http.StatusOK, resultDataMap)
-}
+//func JsonFailReturn(c *gin.Context, code int) {
+//	var resultDataMap map[string]interface{} /*创建集合 */
+//	resultDataMap = make(map[string]interface{})
+//	resultDataMap["code"] = code
+//	resultDataMap["data"] = make(map[string]interface{})
+//	resultDataMap["message"] = e.GetMsg(code)
+//	resultDataMap["time"] = time.Now().Unix()
+//	c.JSON(http.StatusOK, resultDataMap)
+//}
 
-/**
+/*
+*
 md5加密
 */
 func Md5(str string) string {
@@ -136,7 +136,8 @@ func Md5(str string) string {
 	return encryptedData
 }
 
-/**
+/*
+*
 判断文件是否存在
 */
 func FileExists(filePath string) bool {

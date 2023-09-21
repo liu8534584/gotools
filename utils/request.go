@@ -1,4 +1,4 @@
-package myhttp
+package utils
 
 import "time"
 import "github.com/parnurzeal/gorequest"

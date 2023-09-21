@@ -1,22 +1,28 @@
-package mystring
+package utils
 
 import (
 	"bytes"
 	"encoding/binary"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/axgle/mahonia"
-	"github.com/bitly/go-simplejson"
-	"github.com/liu8534584/gotools/utils/myerr"
 	"github.com/spf13/cast"
 	"reflect"
 	"regexp"
 	"strings"
 )
 
-//首字母大写
-func UcFirst(str string) string {
+type Strings struct {
+}
+
+func NewString() *Strings {
+	return &Strings{}
+}
+
+// 首字母大写
+func (s *Strings) UcFirst(str string) string {
 	var upperStr string
 	vv := []rune(str) // 后文有介绍
 	for i := 0; i < len(vv); i++ {
@@ -34,7 +40,7 @@ func UcFirst(str string) string {
 	return upperStr
 }
 
-func ToSlice(arr interface{}) []interface{} {
+func (s *Strings) ToSlice(arr interface{}) []interface{} {
 	v := reflect.ValueOf(arr)
 	if v.Kind() != reflect.Slice {
 		panic("toslice arr not slice")
@@ -47,7 +53,7 @@ func ToSlice(arr interface{}) []interface{} {
 	return ret
 }
 
-func IsGBK(data []byte) bool {
+func (s *Strings) IsGBK(data []byte) bool {
 	length := len(data)
 	var i int = 0
 	for i < length {
@@ -73,7 +79,7 @@ func IsGBK(data []byte) bool {
 	return true
 }
 
-func preNUm(data byte) int {
+func (s *Strings) preNUm(data byte) int {
 	str := fmt.Sprintf("%b", data)
 	var i int = 0
 	for i < len(str) {
@@ -84,7 +90,7 @@ func preNUm(data byte) int {
 	}
 	return i
 }
-func IsUtf8(data []byte) bool {
+func (s *Strings) IsUtf8(data []byte) bool {
 	for i := 0; i < len(data); {
 		if data[i]&0x80 == 0x00 {
 			// 0XXX_XXXX
@@ -113,7 +119,7 @@ func IsUtf8(data []byte) bool {
 	return true
 }
 
-func TrimHtml(src string) string {
+func (s *Strings) TrimHtml(src string) string {
 	//将HTML标签全转换成小写
 	re, _ := regexp.Compile("\\<[\\S\\s]+?\\>")
 	src = re.ReplaceAllStringFunc(src, strings.ToLower)
@@ -132,7 +138,7 @@ func TrimHtml(src string) string {
 	return strings.TrimSpace(src)
 }
 
-func U2S(form string) (to string, err error) {
+func (s *Strings) U2S(form string) (to string, err error) {
 	bs, err := hex.DecodeString(strings.Replace(form, `\u`, ``, -1))
 	if err != nil {
 		return
@@ -144,7 +150,7 @@ func U2S(form string) (to string, err error) {
 	return
 }
 
-func ConvertToString(src string, srcCode string, tagCode string) string {
+func (s *Strings) ConvertToString(src string, srcCode string, tagCode string) string {
 
 	srcCoder := mahonia.NewDecoder(srcCode)
 
@@ -160,13 +166,13 @@ func ConvertToString(src string, srcCode string, tagCode string) string {
 
 }
 
-//去掉多余信息
-func StringRemove(html string, removeStringList string) string {
+// 去掉多余信息
+func (s *Strings) StringRemove(html string, removeStringList string) string {
 
 	if removeStringList == "" {
 		html = strings.ReplaceAll(html, "<p>", "    ")
 		html = strings.ReplaceAll(html, "</p>", "\r\n")
-		html = TrimHtml(html)
+		html = s.TrimHtml(html)
 		return html
 	}
 
@@ -194,32 +200,32 @@ func StringRemove(html string, removeStringList string) string {
 
 	html = strings.ReplaceAll(html, "<p>", "    ")
 	html = strings.ReplaceAll(html, "</p>", "\r\n")
-	html = TrimHtml(html)
+	html = s.TrimHtml(html)
 
 	return html
 }
 
-//获取正则表达式匹配内容
-func GetRegexpContents(html []byte, rule string) (string, error) {
+// 获取正则表达式匹配内容
+func (s *Strings) GetRegexpContents(html []byte, rule string) (string, error) {
 	reg := regexp.MustCompile(rule)
 	res := reg.FindAllString(string(html), -1)
 	return res[0], nil
 }
 
-func GetRegexpContentsList(html []byte, rule string) ([]string, error) {
+func (s *Strings) GetRegexpContentsList(html []byte, rule string) ([]string, error) {
 	reg := regexp.MustCompile(rule)
 	res := reg.FindAllString(string(html), -1)
 	return res, nil
 }
 
-func GetCssSelectorContentsList(html []byte, rule string) ([]string, error) {
+func (s *Strings) GetCssSelectorContentsList(html []byte, rule string) ([]string, error) {
 	var urlList []string
 	var attr string
 	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(html))
 	var logInfo string
 	if err != nil {
 		logInfo = fmt.Sprintf("转换成goquery对象失败,err:%v", err)
-		return urlList, myerr.NewError(4001, logInfo)
+		return urlList, errors.New(logInfo)
 	}
 
 	if strings.Index(rule, ":") != -1 {
@@ -249,13 +255,13 @@ func GetCssSelectorContentsList(html []byte, rule string) ([]string, error) {
 	//return info, nil
 }
 
-//获取css选择器匹配内容
-func GetCssSelectorContents(html []byte, rule string) (string, error) {
+// 获取css选择器匹配内容
+func (s *Strings) GetCssSelectorContents(html []byte, rule string) (string, error) {
 	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(html))
 	var logInfo, info string
 	if err != nil {
 		logInfo = fmt.Sprintf("转换成goquery对象失败,err:%v", err)
-		return "", myerr.NewError(400, logInfo)
+		return "", errors.New(logInfo)
 	}
 
 	if strings.Contains(rule, ":href") {

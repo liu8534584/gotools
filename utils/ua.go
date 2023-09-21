@@ -1,4 +1,4 @@
-package myhttp
+package utils
 
 import (
 	"math/rand"

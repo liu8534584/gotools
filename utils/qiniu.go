@@ -1,11 +1,10 @@
-package upload
+package utils
 
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
-	"github.com/liu8534584/gotools/utils/logging"
-	"github.com/liu8534584/gotools/utils/myredis"
 	"github.com/qiniu/api.v7/v7/auth/qbox"
 	"github.com/qiniu/api.v7/v7/storage"
 )
@@ -23,10 +22,6 @@ func NewQiniu(accessKey, secretKey, bucket string) *Qiniu {
 
 func (q *Qiniu) getUploadToken() string {
 
-	token, err := myredis.Client.Get("key_qiniu_upload_token").Result()
-	if err == nil {
-		return token
-	}
 	putPolicy := storage.PutPolicy{
 		Scope: bucket,
 	}
@@ -34,7 +29,6 @@ func (q *Qiniu) getUploadToken() string {
 	mac := qbox.NewMac(accessKey, secretKey)
 	upToken := putPolicy.UploadToken(mac)
 
-	myredis.Client.Set("key_qiniu_upload_token", upToken, 7200)
 	return upToken
 }
 
@@ -75,8 +69,7 @@ func (q *Qiniu) UploadFile(k string, filepath string) (string, error) {
 	err := formUploader.PutFile(context.Background(), &ret, q.getUploadToken(), k, filepath, &putExtra)
 	if err != nil {
 		logInfo := fmt.Sprintf("文件上传失败,filepath:%s,err:%v", filepath, err)
-		logging.Error(logInfo)
-		return "", err
+		return "", errors.New(logInfo)
 	}
 	fmt.Println(ret.Key, ret.Hash)
 	return ret.Key, nil

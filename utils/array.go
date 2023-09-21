@@ -1,6 +1,13 @@
-package ArrayUtils
+package utils
 
-func Get(key int, arr []interface{}) (interface{}, bool) {
+type Array struct {
+}
+
+func NewArray() *Array {
+	return &Array{}
+}
+
+func (a *Array) Get(key int, arr []interface{}) (interface{}, bool) {
 	if len(arr) == 0 {
 		return nil, false
 	}
@@ -10,7 +17,7 @@ func Get(key int, arr []interface{}) (interface{}, bool) {
 	return arr[key], true
 }
 
-func StringArrayToInterfaceArray(names []string) []interface{} {
+func (a *Array) StringArrayToInterfaceArray(names []string) []interface{} {
 	vals := make([]interface{}, len(names))
 	for i, v := range names {
 		vals[i] = v
@@ -18,8 +25,8 @@ func StringArrayToInterfaceArray(names []string) []interface{} {
 	return vals
 }
 
-//是否在数组中
-func InArray(value interface{}, arr []interface{}) bool {
+// 是否在数组中
+func (a *Array) InArray(value interface{}, arr []interface{}) bool {
 	for _, v := range arr {
 		if value == v {
 			return true
@@ -30,21 +37,21 @@ func InArray(value interface{}, arr []interface{}) bool {
 }
 
 // a数组中是否包含b数组的全部元素
-func ArrayInArray(aArray, bArray []interface{}) bool {
+func (a *Array) ArrayInArray(aArray, bArray []interface{}) bool {
 	if len(aArray) == 0 {
 		return false
 	}
 
 	isAllInArray := true
 	for _, b := range aArray {
-		if !InArray(b, aArray) {
+		if !a.InArray(b, aArray) {
 			isAllInArray = false
 		}
 	}
 	return isAllInArray
 }
 
-func RemoveRepeatedElement(arr []string) (newArr []string) {
+func (a *Array) RemoveRepeatedElement(arr []string) (newArr []string) {
 	newArr = make([]string, 0)
 	for i := 0; i < len(arr); i++ {
 		repeat := false

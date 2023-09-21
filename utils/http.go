@@ -1,9 +1,9 @@
-package myhttp
+package utils
 
 import (
+	"errors"
 	"fmt"
-	"github.com/liu8534584/gotools/utils/logging"
-	"github.com/liu8534584/gotools/utils/myerr"
+	"io"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -12,20 +12,13 @@ import (
 	"time"
 )
 
-type myhttp struct {
-}
-
-func CreateMyHttp() *myhttp {
-	return &myhttp{}
-}
-
 func GetResponse(urls string) ([]byte, error) {
 	maxRetry := 3
 	i := 0
 	ua := GetUA()
 	for {
 		if i > maxRetry {
-			return nil, myerr.NewError(400, "获取内容为空")
+			return nil, errors.New("获取内容为空")
 		}
 
 		request, _ := http.NewRequest("GET", urls, nil)
@@ -43,13 +36,11 @@ func GetResponse(urls string) ([]byte, error) {
 			defer response.Body.Close()
 		}
 		if err != nil || response.StatusCode != 200 {
-			logging.Error(err)
 			i++
 			continue
 		}
-		body, err := ioutil.ReadAll(response.Body)
+		body, err := io.ReadAll(response.Body)
 		if err != nil {
-			logging.Error(err)
 			i++
 			continue
 		}
@@ -88,7 +79,7 @@ func HttpPost(urls string, data map[string]string) (string, error) {
 	}
 
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}
@@ -134,13 +125,13 @@ func Dingding(msg string) {
 	fmt.Println(resp)
 }
 
-//获得html内容
+// 获得html内容
 func GetHtml(url string) ([]byte, error) {
 	var logInfo string
 	response, err := GetResponse(url)
 	if err != nil {
 		logInfo = fmt.Sprintf("http 请求失败，url:%v,err:%v", url, err)
-		return nil, myerr.NewError(400, logInfo)
+		return nil, errors.New(logInfo)
 	}
 
 	return response, nil

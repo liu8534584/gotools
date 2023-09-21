@@ -1,4 +1,4 @@
-package common
+package utils
 
 import (
 	"bytes"
@@ -9,9 +9,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/liu8534584/gotools/consts"
-	"github.com/liu8534584/gotools/utils/file"
-	"github.com/liu8534584/gotools/utils/myhttp"
 	"io"
 	"io/ioutil"
 	"log"
@@ -24,7 +21,7 @@ import (
 // 获取文件内容 / 获取url地址内容
 func FileGetContents(urls string) ([]byte, error) {
 	if strings.HasPrefix(urls, "http") {
-		return myhttp.GetResponse(urls)
+		return GetResponse(urls)
 	}
 	if !FileExists(urls) {
 		return nil, errors.New("文件不存在")
@@ -41,18 +38,14 @@ func FileGetContents(urls string) ([]byte, error) {
 *
 写入文件
 */
-func FilePutContent(filename string, data string, flag int) bool {
+func FilePutContent(filename string, data string) bool {
 	var f *os.File
 	var err error
 	dirName := filepath.Dir(filename)
-	if !file.CheckExist(dirName) {
-		_ = file.MakeDir(dirName)
+	if !NewFile().CheckExist(dirName) {
+		_ = NewFile().MakeDir(dirName)
 	}
-	if flag == consts.FileAppend {
-		f, err = os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_APPEND, os.ModePerm)
-	} else {
-		f, err = os.OpenFile(filename, os.O_RDWR|os.O_CREATE, os.ModePerm)
-	}
+	f, err = os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_APPEND, os.ModePerm)
 	if err != nil {
 		log.Fatal(2, "FilePutContent OpenFile fail : '%v'", err)
 		return false

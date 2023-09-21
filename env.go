@@ -16,3 +16,11 @@ func GetApplicationEnvInfo() string {
 	}
 	return envVal
 }
+
+func IsProd() bool {
+	return GetApplicationEnvInfo() == EnvProduction
+}
+
+func IsTest() bool {
+	return GetApplicationEnvInfo() == EnvTest
+}

@@ -1,4 +1,4 @@
-package utils
+package gotools
 
 import "time"
 import "github.com/parnurzeal/gorequest"

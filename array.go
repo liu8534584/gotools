@@ -1,4 +1,4 @@
-package utils
+package gotools
 
 type Array struct {
 }

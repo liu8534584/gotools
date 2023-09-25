@@ -5,8 +5,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/qiniu/api.v7/v7/auth/qbox"
-	"github.com/qiniu/api.v7/v7/storage"
+	"github.com/qiniu/go-sdk/v7/auth/qbox"
+	"github.com/qiniu/go-sdk/v7/storage"
 )
 
 type Qiniu struct {
@@ -23,10 +23,10 @@ func NewQiniu(accessKey, secretKey, bucket string) *Qiniu {
 func (q *Qiniu) getUploadToken() string {
 
 	putPolicy := storage.PutPolicy{
-		Scope: bucket,
+		Scope: q.Bucket,
 	}
 	putPolicy.Expires = 7200 //示例2小时有效期
-	mac := qbox.NewMac(accessKey, secretKey)
+	mac := qbox.NewMac(q.AccessKey, q.SecretKey)
 	upToken := putPolicy.UploadToken(mac)
 
 	return upToken

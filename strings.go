@@ -9,6 +9,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/axgle/mahonia"
 	"github.com/spf13/cast"
+	"github.com/tidwall/gjson"
 	"reflect"
 	"regexp"
 	"strings"
@@ -96,7 +97,7 @@ func (s *Strings) IsUtf8(data []byte) bool {
 			// 0XXX_XXXX
 			i++
 			continue
-		} else if num := preNUm(data[i]); num > 2 {
+		} else if num := s.preNUm(data[i]); num > 2 {
 			// 110X_XXXX 10XX_XXXX
 			// 1110_XXXX 10XX_XXXX 10XX_XXXX
 			// 1111_0XXX 10XX_XXXX 10XX_XXXX 10XX_XXXX
@@ -176,13 +177,8 @@ func (s *Strings) StringRemove(html string, removeStringList string) string {
 		return html
 	}
 
-	jsonData, err := simplejson.NewJson([]byte(removeStringList))
-	if err != nil {
-		return html
-	}
-
-	jsonArr, err := jsonData.Array()
-	if err != nil {
+	jsonArr := gjson.Get(html, "").Array()
+	if len(jsonArr) < 1 {
 		return html
 	}
 

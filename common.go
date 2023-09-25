@@ -9,13 +9,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/gofiber/fiber/v2"
 	"io"
 	"io/ioutil"
 	"log"
+	"net"
 	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 // 获取文件内容 / 获取url地址内容
@@ -81,41 +84,43 @@ func JsonEncode(m map[string]interface{}) []byte {
 	return b
 }
 
-/**
+/*
+*
 构造成功返回数据
 */
-//func JsonSuccessReturn(c *gin.Context, code int, data map[string]interface{}) {
-//	var resultDataMap map[string]interface{} /*创建集合 */
-//	resultDataMap = make(map[string]interface{})
-//	resultDataMap["code"] = code
-//	resultDataMap["data"] = data
-//	resultDataMap["message"] = "ok"
-//	resultDataMap["time"] = time.Now().Unix()
-//	c.JSON(http.StatusOK, resultDataMap)
-//}
+func JsonSuccessReturn(c *fiber.Ctx, d interface{}) {
+	var resultDataMap map[string]interface{} /*创建集合 */
+	resultDataMap = make(map[string]interface{})
+	resultDataMap["code"] = 0
+	resultDataMap["data"] = d
+	resultDataMap["message"] = "ok"
+	resultDataMap["time"] = time.Now().Unix()
+	c.JSON(resultDataMap)
+}
 
 // 成功返回空
-//func JsonSuccessReturnNull(c *gin.Context) {
-//	var resultDataMap map[string]interface{} /*创建集合 */
-//	resultDataMap = make(map[string]interface{})
-//	resultDataMap["code"] = e.SUCCESS
-//	resultDataMap["message"] = e.GetMsg(e.SUCCESS)
-//	resultDataMap["time"] = time.Now().Unix()
-//	c.JSON(http.StatusOK, resultDataMap)
-//}
+func JsonSuccessReturnNull(c *fiber.Ctx) {
+	var resultDataMap map[string]interface{} /*创建集合 */
+	resultDataMap = make(map[string]interface{})
+	resultDataMap["code"] = 0
+	resultDataMap["message"] = "ok"
+	resultDataMap["time"] = time.Now().Unix()
+	c.JSON(resultDataMap)
+}
 
-/**
+/*
+*
 构造失败返回数据
 */
-//func JsonFailReturn(c *gin.Context, code int) {
-//	var resultDataMap map[string]interface{} /*创建集合 */
-//	resultDataMap = make(map[string]interface{})
-//	resultDataMap["code"] = code
-//	resultDataMap["data"] = make(map[string]interface{})
-//	resultDataMap["message"] = e.GetMsg(code)
-//	resultDataMap["time"] = time.Now().Unix()
-//	c.JSON(http.StatusOK, resultDataMap)
-//}
+func JsonFailReturn(c *fiber.Ctx, code int, message string) {
+	var resultDataMap map[string]interface{} /*创建集合 */
+	resultDataMap = make(map[string]interface{})
+	resultDataMap["code"] = code
+	resultDataMap["data"] = make(map[string]interface{})
+	resultDataMap["message"] = message
+	resultDataMap["time"] = time.Now().Unix()
+	c.JSON(resultDataMap)
+}
 
 /*
 *
@@ -181,4 +186,29 @@ func GzipAndBase64Encode(encodeStr []byte) (string, error) {
 		return "", err
 	}
 	return base64.StdEncoding.EncodeToString(b.Bytes()), nil
+}
+
+func GetLocalIP() (IpAddr string) {
+	addrSlice, err := net.InterfaceAddrs()
+	if nil != err {
+		IpAddr = "localhost"
+		return
+	}
+	for _, addr := range addrSlice {
+		if ipnet, ok := addr.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if nil != ipnet.IP.To4() {
+				IpAddr = ipnet.IP.String()
+				return
+			}
+		}
+	}
+	IpAddr = "localhost"
+	return
+}
+
+func GetLocalHostname() string {
+	if hostname, err := os.Hostname(); err == nil {
+		return hostname
+	}
+	return ""
 }

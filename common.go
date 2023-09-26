@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/spf13/cast"
 	"io"
 	"io/ioutil"
 	"log"
@@ -94,6 +95,10 @@ func JsonSuccessReturn(c *fiber.Ctx, d interface{}) {
 	resultDataMap["code"] = 0
 	resultDataMap["data"] = d
 	resultDataMap["message"] = "ok"
+	startTime := c.Locals("beginTime")
+	if startTime != "" {
+		resultDataMap["execTime"] = (cast.ToFloat64(time.Now().UnixMilli()) - cast.ToFloat64(startTime)) / 1000
+	}
 	resultDataMap["time"] = time.Now().Unix()
 	c.JSON(resultDataMap)
 }
